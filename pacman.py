@@ -143,9 +143,15 @@ def move():
                 vector(0, GHOST_SPEED),
                 vector(0, -GHOST_SPEED),
             ]
-            plan = choice(options)
-            course.x = plan.x
-            course.y = plan.y
+            options = [v for v in options if valid(point + v)]
+
+            if options:
+                plan = min(options, key=lambda v: abs((point + v) - pacman))
+            else:
+                plan = vector(-course.x, -course.y)
+
+            course.x, course.y = plan.x, plan.y
+            point.move(course)
 
         up()
         goto(point.x + 10, point.y + 10)
